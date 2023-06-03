@@ -1,0 +1,359 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Ibrahim662244/P-126/blob/main/P-126\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**Archery-Target** is a game in which the players shoot sharp-pointed arrows at a round target having 10 rings.\n",
+        "\n",
+        "<img src=\"https://s3-whjr-curriculum-uploads.whjr.online/4de9132a-c71d-42ce-9099-3293e8805fd9.jpg\"> "
+      ],
+      "metadata": {
+        "id": "nUWO5QkC_g-4"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## RL Problem to Solve\n",
+        "Hit the center of the target with maximum reward"
+      ],
+      "metadata": {
+        "id": "5QtHLAqv3wP3"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "<img src=\"https://s3-whjr-curriculum-uploads.whjr.online/40656a8c-14e2-4dd7-9f9e-4c17669b9182.png\" width=300>\n",
+        "\n",
+        "\n",
+        "Number of **State**: ?\n",
+        "\n",
+        "Number of **Actions**: ?\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "Osb6FQ74YZtE"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Import libraries\n",
+        "import numpy as np\n",
+        "import random"
+      ],
+      "metadata": {
+        "id": "M2oIipDmeqap"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Reward Matrix\n",
+        "Reward Matrix represents states as rows and actions as columns with respective awards values assigned for a given state and action pair."
+      ],
+      "metadata": {
+        "id": "Ujmi3BO54LfJ"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Create reward matrix\n",
+        "rewards = np.array([10, 9, 8, 7, 6, 5, 4, 3, 2, 1])\n",
+        "print(rewards)"
+      ],
+      "metadata": {
+        "id": "OUqPgOl0eh2u",
+        "outputId": "d3cf7b28-3253-4a53-b627-04ae89c1c9e6",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[10  9  8  7  6  5  4  3  2  1]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Take Action Randomly"
+      ],
+      "metadata": {
+        "id": "Af-CAmdfkDQY"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Define shoot()\n",
+        "\n",
+        "def shoot():\n",
+        "  return np.random.randint(0, 10)"
+      ],
+      "metadata": {
+        "id": "ibSLCyMyigmK"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "##Q matrix\n",
+        "\n",
+        "**Q-learning** is a reinforcement learning algorithm. Given the current state, it helps to find the best action to be taken by the agent.\n",
+        "\n",
+        "**Q-matrix** represents reward received after a taking particular action in the current state. Initially, all the elements of the Q-matrix are zeroes.\n"
+      ],
+      "metadata": {
+        "id": "JXKyVT28hHoH"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Create Q-matrix\n",
+        "\n",
+        "q_matrix = np.zeros([10])\n",
+        "print(q_matrix)"
+      ],
+      "metadata": {
+        "id": "aNYwOV7ogtw1",
+        "outputId": "c28a4f97-3d18-4cca-ef88-53eaf393be1a",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Take Action"
+      ],
+      "metadata": {
+        "id": "0c95A4SOkGdN"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Define take_action\n",
+        "\n",
+        "def take_action(reward_matrix):\n",
+        "\n",
+        "  ring_index = shoot()\n",
+        "  print(ring_index)\n",
+        "  reward = reward_matrix[ring_index]\n",
+        "  print(reward)\n",
+        "  action = ring_index\n",
+        "  return action, reward"
+      ],
+      "metadata": {
+        "id": "LSBm-8CJ0UfK"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Update Q-Matrix"
+      ],
+      "metadata": {
+        "id": "cKy1VkgO4ZhP"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Define run_episode() method\n",
+        "\n",
+        "def run_episode(reward_matrix, shoot_per_game=5):\n",
+        "\n",
+        "  score = 0\n",
+        "\n",
+        "  #use for loop to iterate for number of chances\n",
+        "  for shoot_number in range(shoot_per_game):\n",
+        "    print(shoot_number)\n",
+        "    action, reward = take_action(reward_matrix)\n",
+        "    score = score + reward_matrix[action]\n",
+        "    print(shoot_number)\n",
+        "  q_matrix[action] = q_matrix[action] + score/shoot_per_game\n",
+        "  return q_matrix "
+      ],
+      "metadata": {
+        "id": "_U6NFICkhGMF"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Call run_episode method to check the final Q-matrix for one episode\n",
+        "q_table = run_episode(rewards)\n",
+        "print(q_table)"
+      ],
+      "metadata": {
+        "id": "n5pcUO-5pJ-h",
+        "outputId": "632633d6-0a4d-45f4-f51f-d030efcc7fa0",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "0\n",
+            "7\n",
+            "3\n",
+            "0\n",
+            "1\n",
+            "0\n",
+            "10\n",
+            "1\n",
+            "2\n",
+            "4\n",
+            "6\n",
+            "2\n",
+            "3\n",
+            "6\n",
+            "4\n",
+            "3\n",
+            "4\n",
+            "0\n",
+            "10\n",
+            "4\n",
+            "[6.6 0.  4.2 0.  3.8 0.  6.8 0.  0.  4.6]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Train\n",
+        "\n",
+        "Create a function that plays  number of games, runs each game for a given number of times, and calculates the mean rewards for each."
+      ],
+      "metadata": {
+        "id": "0dVY734TlZBx"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Define train() function\n",
+        "\n",
+        "def train(episodes):\n",
+        "  #Use for loop to iterate through episodes\n",
+        "\n",
+        "    #Initialize total_reward variable\n",
+        "  \n",
+        "    #Print 'episode start' with episode number\n",
+        "\n",
+        "    #Call run_episode() method to get the q-matrix for one episode\n",
+        "  \n",
+        "    #Episode reward will be sum of all the rewards for one episode\n",
+        "   \n",
+        "    #print episode reward\n",
+        "   \n",
+        "    #Total reward will be sum of all the episode reward\n",
+        "   \n",
+        "    \n",
+        "  #return total_reward\n"
+      ],
+      "metadata": {
+        "id": "smfOXGYZlp7b"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "##Train for 1000 episodes"
+      ],
+      "metadata": {
+        "id": "7WYH_ioykcBC"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Run the train() function for 1000 episodes\n",
+        "\n",
+        "\n",
+        "#Print Average reward\n"
+      ],
+      "metadata": {
+        "id": "cbjnp3PSovsE"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Conclusion: \n",
+        "\n",
+        "This gives us a good idea about the general performance of the simplest reinforcement learning with **one state multiple action** problem also known as \"**K-Armed Bandit**\" problem.\n",
+        "\n",
+        "One of the major use cases of this type of problem can be seen in selecting the right advertisement out many to be displayed on the web page. The machine can be taught to pick the best advertisement with the most user clicks!!\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "-jBnwogyuJP0"
+      }
+    }
+  ]
+}
